@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">iContec</string>
     <string name="action_settings">Settings</string>
+    <string name="card_holder">Card Holder</string>
+    <string name="user_profile_title">User Profile</string>
+    <string name="user_profile_name">Name: </string>
+    <string name="user_profile_number">Phone: </string>
+    <string name="user_profile_work_number">Work</string>
+    <string name="user_profile_home_number">Home</string>
+    <string name="user_profile_cell_number">Cell</string>
 </resources>

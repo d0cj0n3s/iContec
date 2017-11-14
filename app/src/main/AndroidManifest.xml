@@ -19,6 +19,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".WelcomeScreenActivity" />
+        <activity android:name=".UserProfileActivity" />
+        <activity android:name=".ExchangeActivity"></activity>
     </application>
 
 </manifest>
