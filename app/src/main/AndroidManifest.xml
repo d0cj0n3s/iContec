@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.jjone.icontec">
+    <uses-permission android:name="android.permission.NFC" />
+    <uses-feature android:name="android.hardware.nfc" android:required="true"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS"></uses-permission>
+    <uses-permission android:name="android.permission.WRITE_CONTACTS"></uses-permission>
+
 
     <application
         android:allowBackup="true"
@@ -10,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".WelcomeScreenActivity"
+            android:name=".ContactDisplay"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -20,10 +25,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
         <activity android:name=".UserProfileActivity" />
         <activity android:name=".ExchangeActivity" />
         <activity android:name=".SuccessActivity" />
+        <activity android:name=".WelcomeScreenActivity"></activity>
     </application>
 
 </manifest>
