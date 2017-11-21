@@ -1,4 +1,4 @@
-package com.example.jjone.iContec;
+package com.example.jjone.icontec;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Array;
 
-public class MainActivity extends AppCompatActivity
+public class CreateUserProfile extends AppCompatActivity
 {
     SharedPreferences sharedpreferences;
     public static final String MyPREFERENCES = "MyPrefs" ;
