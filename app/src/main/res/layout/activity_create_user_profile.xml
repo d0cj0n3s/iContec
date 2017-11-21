@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.jjone.iContec.CreateUserProfile">
+    tools:context="com.example.jjone.icontec.CreateUserProfile">
 
     <EditText
         android:id="@+id/name"
@@ -13,10 +13,11 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint="@string/edit.name"
+        android:hint="Enter name"
         android:inputType="textPersonName"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="RtlCompat" />
 
     <Button
         android:id="@+id/saveButton"
@@ -24,7 +25,7 @@
         android:layout_height="48dp"
         android:layout_marginEnd="16dp"
         android:onClick="sendMessage"
-        android:text="@string/button_send"
+        android:text="Send"
         app:layout_constraintBaseline_toBaselineOf="@+id/name"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -46,10 +47,11 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint="@string/edit.phoneNumber"
+        android:hint="Enter phone number"
         android:inputType="phone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name" />
+        app:layout_constraintTop_toBottomOf="@+id/name"
+        tools:ignore="RtlCompat" />
 
     <EditText
         android:id="@+id/email"
@@ -58,10 +60,11 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint="@string/edit.email"
+        android:hint="Enter Email"
         android:inputType="textEmailAddress"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/phoneNumber" />
+        app:layout_constraintTop_toBottomOf="@+id/phoneNumber"
+        tools:ignore="RtlCompat" />
 
     <Button
         android:id="@+id/read"
@@ -70,7 +73,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:onClick="deleteAllPref"
-        android:text="@string/button_delete_owner_profile"
+        android:text="Delete"
         app:layout_constraintBaseline_toBaselineOf="@+id/phoneNumber"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.2"
@@ -82,8 +85,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:onClick="readFromPref"
-        android:text="@string/button_read"
+        android:text="Read"
         app:layout_constraintTop_toBottomOf="@+id/response"
-        tools:layout_editor_absoluteX="29dp" />
+        tools:layout_editor_absoluteX="29dp"
+        tools:ignore="MissingConstraints" />
 
 </android.support.constraint.ConstraintLayout>
