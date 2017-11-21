@@ -8,4 +8,8 @@
     <string name="user_profile_work_number">Work</string>
     <string name="user_profile_home_number">Home</string>
     <string name="user_profile_cell_number">Cell</string>
+    <string name="Add_Button">ADD CONTACT</string>
+    <string name="EDIT_NAME">Test Subject 001</string>
+    <string name="EDIT_NUMBER">250-123-5213</string>
+    <string name="EDIT_EMAIL">TestSubject@tru.ca</string>
 </resources>

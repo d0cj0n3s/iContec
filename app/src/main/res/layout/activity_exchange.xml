@@ -1,9 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.example.jjone.icontec.ExchangeActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <EditText
+        android:id="@+id/txtBoxAddMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:paddingTop="30dp"
+        android:text="@string/app_name"
+        android:textSize="30sp" />
+
+    <EditText
+        android:id="@+id/txtBoxAddMessage2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:paddingTop="30dp"
+        android:text="@string/EDIT_NUMBER"
+        android:textSize="30sp" />
+
+    <EditText
+        android:id="@+id/txtBoxAddMessage3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:paddingTop="30dp"
+        android:text="@string/EDIT_EMAIL"
+        android:textSize="30sp" />
+
+    <Button
+        android:id="@+id/buttonAddMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/Add_Button"
+        android:textSize="30sp" />
+
+</LinearLayout>
