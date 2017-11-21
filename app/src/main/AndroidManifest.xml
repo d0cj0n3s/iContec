@@ -26,6 +26,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".UserProfileActivity" />
+        <activity android:name=".CreateUserProfile: />
         <activity android:name=".ExchangeActivity" />
         <activity android:name=".SuccessActivity" />
         <activity android:name=".WelcomeScreenActivity"></activity>
