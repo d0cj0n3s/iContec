@@ -2,12 +2,19 @@ package com.example.jjone.icontec;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,12 +32,17 @@ public class CreateUserProfile extends AppCompatActivity
     SharedPreferences sharedpreferences;
     public static final String MyPREFERENCES = "MyPrefs" ;
 
+    //For popup window
+    private PopupWindow popupWindow;
+    private LayoutInflater layoutInflater;
+    private ConstraintLayout constraintLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_user_profile);
-         setTitle("User Profile Creation");
+        setTitle("User Profile Creation");
     }
     
     // delete method added for testing. Deletes the shared preferences. 
@@ -63,7 +75,36 @@ public class CreateUserProfile extends AppCompatActivity
         Toast.makeText(CreateUserProfile.this,"Thanks! Your profile is created!",Toast.LENGTH_LONG).show();
     }
 
-    // Method to test if the information is actually in the shared preferences
+    // method for the pup that displays the tutorial when the Instructions button is tapped
+    @SuppressLint("SetTextI18n")
+    public void popUpTutorialUserCreate(View view)
+    {
+        constraintLayout = findViewById(R.id.userCon);
+
+        layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+        ViewGroup container = (ViewGroup)layoutInflater.inflate(R.layout.tutorial_popup,null);
+
+        popupWindow = new PopupWindow(container, 900,500,true);
+
+        String tutorialMessage = "Enter in the contact details that you wish to transfer to another" +
+                " user. At the moment there are no constraints on the form of the entries. To save " +
+                "your entries, click Save. To proceed, click Next.";
+
+        ((TextView)popupWindow.getContentView().findViewById(R.id.tutorialText)).setText(tutorialMessage);
+        popupWindow.showAtLocation(constraintLayout, Gravity.NO_GRAVITY, 250,500);
+
+        container.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent)
+            {
+                popupWindow.dismiss();
+                return true;
+            }
+        });
+    }
+
+    /** Method to test if the information is actually in the shared preferences
     public void readFromPref(View view)
     {
         SharedPreferences prefs = this.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
@@ -76,5 +117,11 @@ public class CreateUserProfile extends AppCompatActivity
         output.setText(sb);
         Toast.makeText(CreateUserProfile.this,"Thanks",Toast.LENGTH_LONG).show();
 
+    }*/
+
+    // Method for Proceed button. Proceeds to next activity.
+    public void pastCreateUserProfile (View view)
+    {
+        startActivity(new Intent(this, ContactDisplay.class));
     }
 }

@@ -1,5 +1,6 @@
 package com.example.jjone.icontec;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -12,15 +13,22 @@ import android.os.Build;
 import android.os.Parcelable;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.nio.charset.Charset;
@@ -41,6 +49,11 @@ public class ExchangeActivity extends Activity
 
     SharedPreferences sharedpreferences;
     public static final String MyPREFERENCES = "MyPrefs" ;
+
+    //For popup window
+    private PopupWindow popupWindow;
+    private LayoutInflater layoutInflater;
+    private LinearLayout linearLayout;
 
 
     @Override
@@ -249,5 +262,36 @@ public class ExchangeActivity extends Activity
         Log.d("DB", "onResume");
         updateTextViews();
         handleNfcIntent(getIntent());
+    }
+
+    // method for the pup that displays the tutorial when the Instructions button is tapped
+    @SuppressLint("SetTextI18n")
+    public void popUpTutorialExchangeInfo(View view)
+    {
+        linearLayout = findViewById(R.id.linearLay);
+
+        layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+        ViewGroup container = (ViewGroup)layoutInflater.inflate(R.layout.tutorial_popup,null);
+
+        popupWindow = new PopupWindow(container, 900,900,true);
+
+        String tutorialMessage = "For development purposes, these fields are entered by the testers." +
+                "\n The finished version will have these fields autopopulated from the user profile " +
+                "that was created after the welcome screen. \nTo Exchange contact information, enter " +
+                "the information you wish to exchange in the fields, and click the button 'Exchange" +
+                " information, and press this device against the receiving device.";
+
+        ((TextView)popupWindow.getContentView().findViewById(R.id.tutorialText)).setText(tutorialMessage);
+        popupWindow.showAtLocation(linearLayout, Gravity.NO_GRAVITY, 250,500);
+
+        container.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent)
+            {
+                popupWindow.dismiss();
+                return true;
+            }
+        });
     }
 }

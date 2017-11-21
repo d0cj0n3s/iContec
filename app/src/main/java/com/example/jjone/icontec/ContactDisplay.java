@@ -9,14 +9,19 @@ import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +37,12 @@ public class ContactDisplay extends AppCompatActivity
     String id;
     String name;
     FloatingActionButton exchange;
+
+    //For popup window
+    private PopupWindow popupWindow;
+    private LayoutInflater layoutInflater;
+    private ConstraintLayout constraintLayout;
+
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -120,9 +131,36 @@ public class ContactDisplay extends AppCompatActivity
                 startActivity(i);
             }
         });
-
-
     }
+
+    // method for the pup that displays the tutorial when the Instructions button is tapped
+    @SuppressLint("SetTextI18n")
+    public void popUpTutorialContactDisplay(View view)
+    {
+        constraintLayout = findViewById(R.id.conDisplay);
+
+        layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+        ViewGroup container = (ViewGroup)layoutInflater.inflate(R.layout.tutorial_popup,null);
+
+        popupWindow = new PopupWindow(container, 900,400,true);
+
+        String tutorialMessage = "To view a contact who is listed, touch the entry. To proceed to " +
+                "exchanging details, click the big fuscia dot in the lower right corner.";
+
+        ((TextView)popupWindow.getContentView().findViewById(R.id.tutorialText)).setText(tutorialMessage);
+        popupWindow.showAtLocation(constraintLayout, Gravity.NO_GRAVITY, 250,500);
+
+        container.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent)
+            {
+                popupWindow.dismiss();
+                return true;
+            }
+        });
+    }
+
     public void onBackPressed() {
         Intent startMain = new Intent(Intent.ACTION_MAIN);
         startMain.addCategory(Intent.CATEGORY_HOME);
