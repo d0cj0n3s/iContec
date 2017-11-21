@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Build;
 import android.provider.ContactsContract;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,7 +34,7 @@ public class ContactDisplay extends AppCompatActivity
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
     String id;
     String name;
-
+    FloatingActionButton exchange;
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -44,6 +46,7 @@ public class ContactDisplay extends AppCompatActivity
         StringBuilder sb = new StringBuilder("");
 
         contact_list = (ListView) findViewById(R.id.list_contact);
+        exchange = (FloatingActionButton)findViewById(R.id.btn_exchange);
         final List<String[]> items_subitems = new LinkedList<String[]>();
 
         // Check the SDK version and whether the permission is already granted or not.
@@ -110,6 +113,14 @@ public class ContactDisplay extends AppCompatActivity
                 TextView contact_name = (TextView)view.findViewById(android.R.id.text1);
                 TextView contact_id = (TextView)view.findViewById(android.R.id.text2);
                 Toast.makeText(ContactDisplay.this, contact_name.getText().toString() + ": " + contact_id.getText().toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        exchange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(ContactDisplay.this, ExchangeActivity.class);
+                startActivity(i);
             }
         });
 

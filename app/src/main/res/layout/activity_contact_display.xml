@@ -88,4 +88,14 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
     </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btn_exchange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_margin="16dp"
+        android:clickable="true"
+        tools:layout_editor_absoluteX="290dp"
+        tools:layout_editor_absoluteY="479dp" />
 </android.support.constraint.ConstraintLayout>
