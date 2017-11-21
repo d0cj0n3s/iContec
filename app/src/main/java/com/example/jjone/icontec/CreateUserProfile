@@ -1,4 +1,4 @@
-package com.example.jjone.filetest;
+package com.example.jjone.iContec;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -30,6 +30,13 @@ public class MainActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+         setTitle("User Profile Creation");
+    }
+    
+    // delete method added for testing. Deletes the shared preferences. 
+    public void deleteAllPref(View view)
+    {
+        getApplicationContext().getSharedPreferences(MyPREFERENCES, 0).edit().clear().commit();
     }
 
     // Called when the user taps the Send button
