@@ -1,4 +1,4 @@
-package com.example.jjone.iContec;
+package com.example.jjone.icontec;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Array;
 
-public class MainActivity extends AppCompatActivity
+public class CreateUserProfile extends AppCompatActivity
 {
     SharedPreferences sharedpreferences;
     public static final String MyPREFERENCES = "MyPrefs" ;
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_create_user_profile);
          setTitle("User Profile Creation");
     }
     
@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity
         editor.putString("phone", ownerPhone);
         editor.putString("email", ownerEmail);
         editor.apply(); // commit changes
-        Toast.makeText(MainActivity.this,"Thanks! Your profile is created!",Toast.LENGTH_LONG).show();
+        Toast.makeText(CreateUserProfile.this,"Thanks! Your profile is created!",Toast.LENGTH_LONG).show();
     }
 
     // Method to test if the information is actually in the shared preferences
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity
             sb.append(name + "\n" + phone + "\n" + email + "\n");
         TextView output = findViewById(R.id.response);
         output.setText(sb);
-        Toast.makeText(MainActivity.this,"Thanks",Toast.LENGTH_LONG).show();
+        Toast.makeText(CreateUserProfile.this,"Thanks",Toast.LENGTH_LONG).show();
 
     }
 }
