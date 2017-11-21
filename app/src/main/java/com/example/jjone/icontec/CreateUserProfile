@@ -50,20 +50,10 @@ public class MainActivity extends AppCompatActivity
         editor.putString("phone", ownerPhone);
         editor.putString("email", ownerEmail);
         editor.apply(); // commit changes
-        Toast.makeText(MainActivity.this,"Thanks",Toast.LENGTH_LONG).show();
-
-       /** EditText name = findViewById(R.id.name);
-        EditText phoneNumber = findViewById(R.id.phoneNumber);
-        EditText email = findViewById(R.id.email);
-
-        userInfo[0] = name.getText().toString();
-        userInfo[1] = phoneNumber.getText().toString();
-        userInfo[2] = email.getText().toString();
-
-        writeToFile();
-        readFromFile(getApplicationContext());*/
+        Toast.makeText(MainActivity.this,"Thanks! Your profile is created!",Toast.LENGTH_LONG).show();
     }
 
+    // Method to test if the information is actually in the shared preferences
     public void readFromPref(View view)
     {
         SharedPreferences prefs = this.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
