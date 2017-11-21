@@ -36,7 +36,10 @@ public class CreateUserProfile extends AppCompatActivity
     // delete method added for testing. Deletes the shared preferences. 
     public void deleteAllPref(View view)
     {
-        getApplicationContext().getSharedPreferences(MyPREFERENCES, 0).edit().clear().commit();
+        SharedPreferences preferences = getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.commit();
     }
 
     // Called when the user taps the Send button
