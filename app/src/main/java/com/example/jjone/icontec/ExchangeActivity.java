@@ -5,11 +5,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.NfcEvent;
 import android.os.Build;
+import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
@@ -26,11 +28,13 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 
@@ -65,6 +69,20 @@ public class ExchangeActivity extends Activity
         name =  findViewById(R.id.txtBoxAddMessage);
         phoneNumber = findViewById(R.id.txtBoxAddMessage2);
         email = findViewById(R.id.txtBoxAddMessage3);
+        ImageView card = findViewById(R.id.cardView);
+
+        // Fill in the owner information box
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String ownerName = sharedpreferences.getString("name", "No name");
+        String ownerPhone = sharedpreferences.getString("phone", "No phone");
+        String ownerEmail = sharedpreferences.getString("email", "No email");
+        String ownerCard = sharedpreferences.getString("cardUri", "No card");
+        name.setText(ownerName);
+        phoneNumber.setText(ownerPhone);
+        email.setText(ownerEmail);
+        Log.d("DB", "name " + ownerName);
+        card.setImageURI(Uri.parse(ownerCard));
+
 
         btnAddMessage =  findViewById(R.id.buttonAddMessage);
 
@@ -115,10 +133,17 @@ public class ExchangeActivity extends Activity
         String getName = sharedpreferences.getString("name", "No name defined");//"No name defined" is the default value.
         String getPhone = sharedpreferences.getString("phone", "No phone number  defined");
         String getEmail = sharedpreferences.getString("email", "No email defined");
+        String getUri = sharedpreferences.getString("cardUri", "No card included");
 
         messagesToSendArray.add(getName);
         messagesToSendArray.add(getPhone);
         messagesToSendArray.add(getEmail);
+        messagesToSendArray.add(getUri);
+
+        File fileDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+
+        File fileToTransfer = new File(fileDirectory, getUri);
+        fileToTransfer.setReadable(true, false);
 
         Toast.makeText(this, "Added Message", Toast.LENGTH_LONG).show();
     }
@@ -293,5 +318,11 @@ public class ExchangeActivity extends Activity
                 return true;
             }
         });
+    }
+
+    // Method for Proceed button. Proceeds to Success activity.
+    public void toSuccessActivity (View view)
+    {
+        startActivity(new Intent(this, SuccessActivity.class));
     }
 }
