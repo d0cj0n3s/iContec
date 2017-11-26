@@ -3,17 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/holo_blue_bright">
+    android:background="@android:color/background_dark"
+    android:padding="16dip">
 
     <TextView
         android:id="@+id/tutorialText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/welcomeScreen_black"
+        android:background="@drawable/back"
+        android:text="Some text"
+        android:textColor="@android:color/white"
         android:textSize="14sp"
         android:textStyle="bold"
+        tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="-20dp"
-        android:text="Some text" android:background="@drawable/back"
-        tools:ignore="MissingConstraints" />
+        tools:layout_editor_absoluteY="-20dp" />
 </android.support.constraint.ConstraintLayout>

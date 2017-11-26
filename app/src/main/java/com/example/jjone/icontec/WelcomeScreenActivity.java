@@ -1,7 +1,9 @@
 package com.example.jjone.icontec;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +29,8 @@ public class WelcomeScreenActivity extends AppCompatActivity {
     private LayoutInflater layoutInflater;
     private ConstraintLayout constraintLayout;
 
+    SharedPreferences sharedpreferences;
+    public static final String MyPREFERENCES = "MyPrefs" ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -51,14 +55,14 @@ public class WelcomeScreenActivity extends AppCompatActivity {
         layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         ViewGroup container = (ViewGroup)layoutInflater.inflate(R.layout.tutorial_popup,null);
 
-        popupWindow = new PopupWindow(container, 900,900,true);
+        popupWindow = new PopupWindow(container, 900,1000,true);
 
         String tutorialMessage = "Thank you for choosing iContec!\n\nThis application is designed to" +
                 " make exchanging contact information easier than ever before!\n\nTo begin using the" +
                 " application, press the 'Proceed' button located at the bottom of the screen.\n\n";
 
         ((TextView)popupWindow.getContentView().findViewById(R.id.tutorialText)).setText(tutorialMessage);
-        popupWindow.showAtLocation(constraintLayout, Gravity.NO_GRAVITY, 250,500);
+        popupWindow.showAtLocation(constraintLayout, Gravity.NO_GRAVITY, 250,750);
 
         container.setOnTouchListener(new View.OnTouchListener()
         {
@@ -71,10 +75,17 @@ public class WelcomeScreenActivity extends AppCompatActivity {
         });
     }
 
-    // Method for Proceed button. Proceeds to next activity.
+    // Method for Proceeds button.
     public void pastWelcome (View view)
     {
-        startActivity(new Intent(this, CreateUserProfile.class));
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String owner = sharedpreferences.getString("name", "No name");
+
+        // If the owner's name is not set, choose activity to start
+        if(owner.equals("No name"))
+            startActivity(new Intent(this, CreateUserProfile.class));
+        else
+            startActivity(new Intent(this, ContactDisplay.class));
     }
 
 

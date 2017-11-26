@@ -33,6 +33,7 @@
                     android:textSize="30sp" />
 
                 <TextView
+                    android:id="@+id/ownerName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Device Owner"
@@ -40,8 +41,8 @@
 
                 <Button
                     android:id="@+id/help_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:onClick="popUpTutorialContactDisplay"
                     android:text="Help" />
@@ -58,7 +59,9 @@
                     android:id="@+id/imageView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@android:drawable/ic_menu_camera" />
+                    app:srcCompat="@android:drawable/ic_menu_camera"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter" />
             </LinearLayout>
 
         </LinearLayout>

@@ -3,14 +3,21 @@ package com.example.jjone.icontec;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.provider.MediaStore;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
@@ -20,10 +27,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -38,6 +48,12 @@ public class ContactDisplay extends AppCompatActivity
     String name;
     FloatingActionButton exchange;
 
+    SharedPreferences sharedpreferences;
+    public static final String MyPREFERENCES = "MyPrefs" ;
+
+    private static int RESULT_LOAD_IMAGE = 1;
+    private String[] galleryPermissions = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
     //For popup window
     private PopupWindow popupWindow;
     private LayoutInflater layoutInflater;
@@ -47,7 +63,6 @@ public class ContactDisplay extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_display);
 
@@ -57,11 +72,18 @@ public class ContactDisplay extends AppCompatActivity
         exchange = (FloatingActionButton)findViewById(R.id.btn_exchange);
         final List<String[]> items_subitems = new LinkedList<String[]>();
 
+
         // Check the SDK version and whether the permission is already granted or not.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED)
         {
             requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
         }
+
+        // Fill in the owner information box
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String owner = sharedpreferences.getString("name", "No name");
+        TextView ownerIdName = (TextView)findViewById(R.id.ownerName);
+        ownerIdName.setText(owner);
 
 
         ContentResolver resolver = getContentResolver();
@@ -142,7 +164,7 @@ public class ContactDisplay extends AppCompatActivity
         layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         ViewGroup container = (ViewGroup)layoutInflater.inflate(R.layout.tutorial_popup,null);
 
-        popupWindow = new PopupWindow(container, 900,400,true);
+        popupWindow = new PopupWindow(container, 900,470,true);
 
         String tutorialMessage = "To view a contact who is listed, touch the entry. To proceed to " +
                 "exchanging details, click the big fuscia dot in the lower right corner.";
@@ -161,11 +183,31 @@ public class ContactDisplay extends AppCompatActivity
         });
     }
 
-    public void onBackPressed() {
+    public void onBackPressed()
+    {
         Intent startMain = new Intent(Intent.ACTION_MAIN);
         startMain.addCategory(Intent.CATEGORY_HOME);
         startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(startMain);
-
     }
+
+    // Method to load image into Imageview for the business cards
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data)
+        {
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+            Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+            cursor.moveToFirst();
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String picturePath = cursor.getString(columnIndex);
+            cursor.close();
+            ImageView imageView = (ImageView) findViewById(R.id.imageView);
+            imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+        }
+    }
+
 }
