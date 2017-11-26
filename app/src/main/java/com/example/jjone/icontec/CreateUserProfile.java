@@ -55,8 +55,7 @@ public class CreateUserProfile extends AppCompatActivity
         setContentView(R.layout.activity_create_user_profile);
         setTitle("User Profile Creation");
 
-        isStoragePermissionGranted();
-        isContactsPermissionGranted();
+
 /**
         // for making the business card full screen
         imageView = (ImageView) findViewById(R.id.cardThumbnail);
@@ -144,42 +143,6 @@ public class CreateUserProfile extends AppCompatActivity
                 return true;
             }
         });
-    }
-
-    // methods to check if the appropriate permissions have been granted
-    public boolean isStoragePermissionGranted() {
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED) {
-                return true;
-            } else {
-
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                return false;
-            }
-        }
-        else { //permission is automatically granted on sdk<23 upon installation
-            return true;
-        }
-    }
-    public boolean isContactsPermissionGranted()
-    {
-        if (Build.VERSION.SDK_INT >= 23)
-        {
-            if (checkSelfPermission(android.Manifest.permission.READ_CONTACTS)
-                    == PackageManager.PERMISSION_GRANTED) {
-
-                return true;
-            }
-            else
-                {
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS}, 1);
-                    return false;
-                }
-        }
-        else { //permission is automatically granted on sdk<23 upon installation
-            return true;
-        }
     }
 
     // method to connect an image to a card id to attach to the user account

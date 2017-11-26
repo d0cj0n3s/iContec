@@ -1,11 +1,15 @@
 package com.example.jjone.icontec;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -44,6 +48,9 @@ public class WelcomeScreenActivity extends AppCompatActivity {
         downtoup = AnimationUtils.loadAnimation(this,R.anim.downandup);
         linear_layout_icontect.setAnimation(uptodown);
         linear_layout_button.setAnimation(downtoup);
+
+        isStoragePermissionGranted();
+        isContactsPermissionGranted();
     }
 
     // method for the pup that displays the tutorial when the Instructions button is tapped
@@ -86,6 +93,42 @@ public class WelcomeScreenActivity extends AppCompatActivity {
            startActivity(new Intent(this, CreateUserProfile.class));
         //else
          //   startActivity(new Intent(this, ContactDisplay.class));
+    }
+
+    // methods to check if the appropriate permissions have been granted
+    public boolean isStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            } else {
+
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                return false;
+            }
+        }
+        else { //permission is automatically granted on sdk<23 upon installation
+            return true;
+        }
+    }
+    public boolean isContactsPermissionGranted()
+    {
+        if (Build.VERSION.SDK_INT >= 23)
+        {
+            if (checkSelfPermission(android.Manifest.permission.READ_CONTACTS)
+                    == PackageManager.PERMISSION_GRANTED) {
+
+                return true;
+            }
+            else
+            {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS}, 1);
+                return false;
+            }
+        }
+        else { //permission is automatically granted on sdk<23 upon installation
+            return true;
+        }
     }
 
 
