@@ -52,7 +52,7 @@
         android:id="@+id/buttonSendImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="toSuccessActivity"
+        android:onClick="sendCard"
         android:text="Send Card" />
 
     <Button

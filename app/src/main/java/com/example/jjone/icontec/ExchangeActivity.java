@@ -174,7 +174,7 @@ public class ExchangeActivity extends Activity
                         ContactsContract.CommonDataKinds.Phone.TYPE_WORK);
 
 
-        startActivity(intent);
+        startActivityForResult(intent, 1);
     }
 
     @Override
@@ -321,8 +321,26 @@ public class ExchangeActivity extends Activity
     }
 
     // Method for Proceed button. Proceeds to Success activity.
-    public void toSuccessActivity (View view)
+    public void sendCard (View view)
     {
+
+        String getUri = sharedpreferences.getString("cardUri", "No card included");
+
+        // Retrieve the path to the user's public pictures directory
+        File fileDirectory = Environment
+                .getExternalStoragePublicDirectory(
+                        Environment.DIRECTORY_PICTURES);
+
+        // Create a new file using the specified directory and name
+        File fileToTransfer = new File(fileDirectory, getUri);
+        fileToTransfer.setReadable(true, false);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+        {
+            mNfcAdapter.setBeamPushUris(
+                    new Uri[]{Uri.fromFile(fileToTransfer)}, this);
+        }
+
         startActivity(new Intent(this, SuccessActivity.class));
     }
 }

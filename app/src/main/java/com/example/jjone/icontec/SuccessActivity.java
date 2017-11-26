@@ -21,7 +21,16 @@ public class SuccessActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_success);
 
+
+
+
     }
+
+
+
+
+
+
 
     // Method for Proceed button. Proceeds to ContactDisplay activity.
     public void toHome (View view)
