@@ -28,10 +28,10 @@
         android:layout_marginStart="8dp"
         android:onClick="sendMessage"
         android:text="Save"
+        app:layout_constraintBaseline_toBaselineOf="@+id/next"
         app:layout_constraintEnd_toStartOf="@+id/next"
         app:layout_constraintHorizontal_bias="0.48"
-        app:layout_constraintStart_toEndOf="@+id/help_popup"
-        tools:layout_editor_absoluteY="341dp" />
+        app:layout_constraintStart_toEndOf="@+id/help_popup" />
 
     <EditText
         android:id="@+id/phoneNumber"
@@ -62,10 +62,11 @@
         android:layout_width="85dp"
         android:layout_height="47dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
         android:onClick="pastCreateUserProfile"
         android:text="Next"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:layout_editor_absoluteY="341dp" />
+        app:layout_constraintTop_toBottomOf="@+id/cardThumbnail" />
 
     <Button
         android:id="@+id/help_popup"
@@ -74,8 +75,8 @@
         android:layout_marginStart="16dp"
         android:onClick="popUpTutorialUserCreate"
         android:text="Help"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="341dp" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/saveButton"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView"
@@ -98,26 +99,37 @@
         android:id="@+id/textView5"
         android:layout_width="222dp"
         android:layout_height="27dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:text="Choose Business Card"
         android:textColor="@android:color/black"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="216dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/email"
         tools:textSize="18sp" />
 
     <Button
         android:id="@+id/chooseCard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:onClick="chooseCard"
         android:text="Choose Card"
-        tools:layout_editor_absoluteX="236dp"
-        tools:layout_editor_absoluteY="216dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView5"
+        app:layout_constraintTop_toBottomOf="@+id/email" />
 
     <ImageView
         android:id="@+id/cardThumbnail"
-        android:layout_width="221dp"
-        android:layout_height="98dp"
-        app:srcCompat="@android:drawable/btn_star_big_on"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="243dp" />
+        android:layout_width="215dp"
+        android:layout_height="120dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/chooseCard"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView5"
+        app:srcCompat="@android:drawable/btn_star_big_on" />
 
 </android.support.constraint.ConstraintLayout>

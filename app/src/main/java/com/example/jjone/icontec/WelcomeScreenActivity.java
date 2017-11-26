@@ -82,10 +82,10 @@ public class WelcomeScreenActivity extends AppCompatActivity {
         String owner = sharedpreferences.getString("name", "No name");
 
         // If the owner's name is not set, choose activity to start
-        if(owner.equals("No name"))
-            startActivity(new Intent(this, CreateUserProfile.class));
-        else
-            startActivity(new Intent(this, ContactDisplay.class));
+        //if(owner.equals("No name"))
+           startActivity(new Intent(this, CreateUserProfile.class));
+        //else
+         //   startActivity(new Intent(this, ContactDisplay.class));
     }
 
 
