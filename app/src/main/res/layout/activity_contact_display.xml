@@ -2,10 +2,10 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/conDisplay"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.jjone.icontec.ContactDisplay"
-    >
+    tools:context="com.example.jjone.icontec.ContactDisplay">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,47 +16,88 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="143dp"
             android:layout_weight="2"
             android:orientation="vertical">
 
-            <LinearLayout
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:orientation="horizontal">
+                android:layout_height="5dp"
+                android:layout_weight="1">
 
                 <TextView
+                    android:id="@+id/textView6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Name: "
-                    android:textSize="30sp" />
+                    android:layout_marginEnd="282dp"
+                    android:textSize="30sp"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/ownerName"
+                    app:layout_constraintEnd_toStartOf="@+id/help_button"
+                    app:layout_constraintStart_toStartOf="parent" />
 
                 <TextView
+                    android:id="@+id/ownerName"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="PlaceHolder"
-                    android:textSize="30sp" />
+                    android:layout_height="48dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Device Owner"
+                    android:textSize="30sp"
+                    app:layout_constraintStart_toStartOf="@+id/textView6"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageView
-                    android:id="@+id/imageView2"
+                <Button
+                    android:id="@+id/help_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="8dp"
+                    android:onClick="popUpTutorialContactDisplay"
+                    android:text="Help"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/textView6"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/button3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:srcCompat="@android:drawable/ic_menu_camera" />
-            </LinearLayout>
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginEnd="8dp"
+                    android:onClick="toCreateUserProfile"
+                    android:text="Edit Profile"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="163dp"
+                    android:layout_height="36dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Your Cards:"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/ownerName" />
+
+            </android.support.constraint.ConstraintLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="147dp"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/imageView"
-                    android:layout_width="match_parent"
+                    android:id="@+id/cardView"
+                    android:layout_width="145dp"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@android:drawable/ic_menu_camera" />
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@android:drawable/btn_star_big_on" />
             </LinearLayout>
 
         </LinearLayout>
@@ -91,8 +132,8 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/btn_exchange"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="155dp"
+        android:layout_height="90dp"
         android:layout_gravity="bottom"
         android:layout_margin="16dp"
         android:layout_marginBottom="8dp"

@@ -2,50 +2,42 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/userCon"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.jjone.icontec.CreateUserProfile">
+    tools:context="@android:drawable/btn_star_big_on">
 
     <EditText
         android:id="@+id/name"
         android:layout_width="232dp"
         android:layout_height="44dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="48dp"
         android:ems="10"
         android:hint="Enter name"
         android:inputType="textPersonName"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
         tools:ignore="RtlCompat" />
 
     <Button
         android:id="@+id/saveButton"
         android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_marginEnd="16dp"
+        android:layout_height="47dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:onClick="sendMessage"
-        android:text="Send"
-        app:layout_constraintBaseline_toBaselineOf="@+id/name"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <TextView
-        android:id="@+id/response"
-        android:layout_width="303dp"
-        android:layout_height="81dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email" />
+        android:text="Save"
+        app:layout_constraintBaseline_toBaselineOf="@+id/next"
+        app:layout_constraintEnd_toStartOf="@+id/next"
+        app:layout_constraintHorizontal_bias="0.48"
+        app:layout_constraintStart_toEndOf="@+id/help_popup" />
 
     <EditText
         android:id="@+id/phoneNumber"
         android:layout_width="233dp"
         android:layout_height="43dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="Enter phone number"
         android:inputType="phone"
@@ -58,7 +50,6 @@
         android:layout_width="310dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="Enter Email"
         android:inputType="textEmailAddress"
@@ -67,27 +58,78 @@
         tools:ignore="RtlCompat" />
 
     <Button
-        android:id="@+id/read"
+        android:id="@+id/next"
         android:layout_width="85dp"
         android:layout_height="47dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:onClick="deleteAllPref"
-        android:text="Delete"
-        app:layout_constraintBaseline_toBaselineOf="@+id/phoneNumber"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
+        android:onClick="pastCreateUserProfile"
+        android:text="Next"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.2"
-        app:layout_constraintStart_toEndOf="@+id/phoneNumber" />
+        app:layout_constraintTop_toBottomOf="@+id/cardThumbnail" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/help_popup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:onClick="popUpTutorialUserCreate"
+        android:text="Help"
+        app:layout_constraintBaseline_toBaselineOf="@+id/saveButton"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:onClick="readFromPref"
-        android:text="Read"
-        app:layout_constraintTop_toBottomOf="@+id/response"
-        tools:layout_editor_absoluteX="29dp"
-        tools:ignore="MissingConstraints" />
+        android:text="Create User Profile"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textColor="@color/welcomeScreen_black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.425"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="222dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Choose Business Card"
+        android:textColor="@android:color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/email"
+        tools:textSize="18sp" />
+
+    <Button
+        android:id="@+id/chooseCard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:onClick="chooseCard"
+        android:text="Choose Card"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView5"
+        app:layout_constraintTop_toBottomOf="@+id/email" />
+
+    <ImageView
+        android:id="@+id/cardThumbnail"
+        android:layout_width="215dp"
+        android:layout_height="120dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/chooseCard"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView5"
+        app:srcCompat="@android:drawable/btn_star_big_on" />
 
 </android.support.constraint.ConstraintLayout>
