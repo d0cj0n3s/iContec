@@ -117,6 +117,7 @@ public class ContactDisplay extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Intent i=new Intent(ContactDisplay.this, ExchangeActivity.class);
+                i.putExtra("check", "main");
                 startActivity(i);
             }
         });

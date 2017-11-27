@@ -66,13 +66,22 @@ public class ExchangeActivity extends Activity
         String c_name;
         String c_phone;
         String c_email;
+        String c_check;
 
         if(intent != null) {
-             c_name = intent.getStringExtra("name");
-             c_phone = intent.getStringExtra("phone");
-             c_email = intent.getStringExtra("email");
+            c_check = intent.getStringExtra("check");
+            Log.d("DB", c_check);
+            if(c_check.equals("Welcome")) {
+                c_name = intent.getStringExtra("name");
+                c_phone = intent.getStringExtra("phone");
+                c_email = intent.getStringExtra("email");
 
-             addContact(c_name, c_phone, c_email);
+                Log.d("DB","Hi I am here");
+
+                addContact(c_name, c_phone, c_email);
+            } else {
+                Log.d("DB", "I am out");
+            }
         }
     }
 
@@ -133,6 +142,8 @@ public class ExchangeActivity extends Activity
     }
 
     private void addContact(String name, String phone, String email) {
+
+        Log.d("DB", "Add Contact");
 
         Intent intent = new Intent(ContactsContract.Intents.Insert.ACTION);
         intent.setType(ContactsContract.RawContacts.CONTENT_TYPE);

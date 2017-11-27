@@ -61,7 +61,7 @@ public class WelcomeScreenActivity extends AppCompatActivity {
                     if (string.equals(getPackageName())) { continue; }
                     messagesReceivedArray.add(string);
                 }
-                Log.d("DB", String.valueOf(messagesReceivedArray.size()));
+                //Log.d("DB", String.valueOf(messagesReceivedArray.size()));
             } else {
                 Log.d("DB", "message not received or null");
             }
@@ -71,17 +71,20 @@ public class WelcomeScreenActivity extends AppCompatActivity {
                 String phone = messagesReceivedArray.get(1);
                 String email = messagesReceivedArray.get(2);
 
-                Log.d("DB", name + " " + phone + " " + email);
 
+                //Log.d("DB", name + " " + phone + " " + email);
                 Intent exchange_intent = new Intent(WelcomeScreenActivity.this, ExchangeActivity.class);
                 exchange_intent
                         .putExtra("name", name)
                         .putExtra("phone", phone)
-                        .putExtra("email", email);
+                        .putExtra("email", email)
+                        .putExtra("check", "Welcome");
+
+                Log.d("DB", "Recevie ndef in welcome");
 
                 startActivity(exchange_intent);
                 finish();
-                
+
             }
         } else { Log.d("DB", "DOESN't MATCH"); }
     }
