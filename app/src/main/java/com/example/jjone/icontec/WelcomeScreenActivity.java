@@ -1,22 +1,31 @@
 package com.example.jjone.icontec;
 
-import android.app.PendingIntent;
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
-import android.os.Parcelable;
-import android.provider.ContactsContract;
-import android.support.v7.app.AppCompatActivity;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.constraint.ConstraintLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
-import android.widget.Toast;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -25,6 +34,14 @@ public class WelcomeScreenActivity extends AppCompatActivity {
     LinearLayout linear_layout_button;
     Animation uptodown;
     Animation downtoup;
+
+    SharedPreferences sharedpreferences;
+    public static final String MyPREFERENCES = "MyPrefs" ;
+
+    //For popup window
+    private PopupWindow popupWindow;
+    private LayoutInflater layoutInflater;
+    private ConstraintLayout constraintLayout;
 
     private NfcAdapter mNfcAdapter;
 
@@ -39,6 +56,8 @@ public class WelcomeScreenActivity extends AppCompatActivity {
         linear_layout_icontect.setAnimation(uptodown);
         linear_layout_button.setAnimation(downtoup);
 
+        isStoragePermissionGranted();
+        isContactsPermissionGranted();
 
         /** Handle NFC Intent */
         ArrayList<String> messagesReceivedArray = new ArrayList<>();
@@ -89,24 +108,82 @@ public class WelcomeScreenActivity extends AppCompatActivity {
         } else { Log.d("DB", "DOESN't MATCH"); }
     }
 
+    // method for the pup that displays the tutorial when the Instructions button is tapped
+    @SuppressLint("SetTextI18n")
+    public void popUpTutorialWelcome(View view)
+    {
+        constraintLayout = findViewById(R.id.welcomeCon);
 
+        layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+        ViewGroup container = (ViewGroup)layoutInflater.inflate(R.layout.tutorial_popup,null);
+
+        popupWindow = new PopupWindow(container, 900,1000,true);
+
+        String tutorialMessage = "Thank you for choosing iContec!\n\nThis application is designed to" +
+                " make exchanging contact information easier than ever before!\n\nTo begin using the" +
+                " application, press the 'Proceed' button located at the bottom of the screen.\n\n";
+
+        ((TextView)popupWindow.getContentView().findViewById(R.id.tutorialText)).setText(tutorialMessage);
+        popupWindow.showAtLocation(constraintLayout, Gravity.NO_GRAVITY, 250,750);
+
+        container.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent)
+            {
+                popupWindow.dismiss();
+                return true;
+            }
+        });
+    }
+
+
+    // Method for Proceeds button.
     public void pastWelcome (View view)
     {
-        final String PREFS_NAME = "MyPrefsFile";
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String owner = sharedpreferences.getString("name", "No name");
 
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-
-        if (settings.getBoolean("my_first_time", true)) {
-            //the app is being launched for first time, do something
-            Log.d("Comments", "First time");
-            settings.edit().putBoolean("my_first_time", false).commit();
+        // If the owner's name is not set, choose activity to start
+        if(owner.equals("No name"))
             startActivity(new Intent(this, CreateUserProfile.class));
-            finish();
-        }
         else
-        {
             startActivity(new Intent(this, ContactDisplay.class));
-            finish();
+    }
+
+    // methods to check if the appropriate permissions have been granted
+    public boolean isStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            } else {
+
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                return false;
+            }
+        }
+        else { //permission is automatically granted on sdk<23 upon installation
+            return true;
+        }
+    }
+    public boolean isContactsPermissionGranted()
+    {
+        if (Build.VERSION.SDK_INT >= 23)
+        {
+            if (checkSelfPermission(android.Manifest.permission.READ_CONTACTS)
+                    == PackageManager.PERMISSION_GRANTED) {
+
+                return true;
+            }
+            else
+            {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS}, 1);
+                return false;
+            }
+        }
+        else { //permission is automatically granted on sdk<23 upon installation
+            return true;
         }
     }
 
