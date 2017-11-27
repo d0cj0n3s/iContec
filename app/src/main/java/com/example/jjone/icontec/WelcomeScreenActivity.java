@@ -1,26 +1,24 @@
 package com.example.jjone.icontec;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.os.Build;
-import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.ActivityCompat;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
+import android.nfc.NfcAdapter;
+import android.os.Parcelable;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
-import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class WelcomeScreenActivity extends AppCompatActivity {
     LinearLayout linear_layout_icontect;
@@ -28,19 +26,11 @@ public class WelcomeScreenActivity extends AppCompatActivity {
     Animation uptodown;
     Animation downtoup;
 
-    //For popup window
-    private PopupWindow popupWindow;
-    private LayoutInflater layoutInflater;
-    private ConstraintLayout constraintLayout;
-
-    SharedPreferences sharedpreferences;
-    public static final String MyPREFERENCES = "MyPrefs" ;
+    private NfcAdapter mNfcAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_welcome_screen);
         linear_layout_icontect = (LinearLayout)findViewById(R.id.layout_icontec);
         linear_layout_button = (LinearLayout) findViewById(R.id.layout_button);
@@ -49,87 +39,75 @@ public class WelcomeScreenActivity extends AppCompatActivity {
         linear_layout_icontect.setAnimation(uptodown);
         linear_layout_button.setAnimation(downtoup);
 
-        isStoragePermissionGranted();
-        isContactsPermissionGranted();
-    }
 
-    // method for the pup that displays the tutorial when the Instructions button is tapped
-    @SuppressLint("SetTextI18n")
-    public void popUpTutorialWelcome(View view)
-    {
-        constraintLayout = findViewById(R.id.welcomeCon);
+        /** Handle NFC Intent */
+        ArrayList<String> messagesReceivedArray = new ArrayList<>();
 
-        layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-        ViewGroup container = (ViewGroup)layoutInflater.inflate(R.layout.tutorial_popup,null);
+        Intent intent = getIntent();
+        if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
 
-        popupWindow = new PopupWindow(container, 900,1000,true);
+            Log.d("DB", "PACKAGE NAME IS MATCHED");
+            NdefMessage ndefMessage = null;
+            Parcelable[] rawMessages = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
 
-        String tutorialMessage = "Thank you for choosing iContec!\n\nThis application is designed to" +
-                " make exchanging contact information easier than ever before!\n\nTo begin using the" +
-                " application, press the 'Proceed' button located at the bottom of the screen.\n\n";
+            if ((rawMessages != null) && (rawMessages.length > 0)) {
+                Log.d("DB", "message received, not null");
+                ndefMessage = (NdefMessage) rawMessages[0];
+                NdefRecord[] attachedRecords = ndefMessage.getRecords();
 
-        ((TextView)popupWindow.getContentView().findViewById(R.id.tutorialText)).setText(tutorialMessage);
-        popupWindow.showAtLocation(constraintLayout, Gravity.NO_GRAVITY, 250,750);
-
-        container.setOnTouchListener(new View.OnTouchListener()
-        {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent)
-            {
-                popupWindow.dismiss();
-                return true;
+                for (NdefRecord record:attachedRecords) {
+                    String string = new String(record.getPayload());
+                    //Make sure don't pass along our AAR (Android Application Record)
+                    if (string.equals(getPackageName())) { continue; }
+                    messagesReceivedArray.add(string);
+                }
+                //Log.d("DB", String.valueOf(messagesReceivedArray.size()));
+            } else {
+                Log.d("DB", "message not received or null");
             }
-        });
+
+            if(messagesReceivedArray.size() > 0) {
+                String name = messagesReceivedArray.get(0);
+                String phone = messagesReceivedArray.get(1);
+                String email = messagesReceivedArray.get(2);
+
+
+                //Log.d("DB", name + " " + phone + " " + email);
+                Intent exchange_intent = new Intent(WelcomeScreenActivity.this, ExchangeActivity.class);
+                exchange_intent
+                        .putExtra("name", name)
+                        .putExtra("phone", phone)
+                        .putExtra("email", email)
+                        .putExtra("check", "Welcome");
+
+                Log.d("DB", "Recevie ndef in welcome");
+
+                startActivity(exchange_intent);
+                finish();
+
+            }
+        } else { Log.d("DB", "DOESN't MATCH"); }
     }
 
-    // Method for Proceeds button.
+
     public void pastWelcome (View view)
     {
-        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        String owner = sharedpreferences.getString("name", "No name");
+        final String PREFS_NAME = "MyPrefsFile";
 
-        // If the owner's name is not set, choose activity to start
-        //if(owner.equals("No name"))
-           startActivity(new Intent(this, CreateUserProfile.class));
-        //else
-         //   startActivity(new Intent(this, ContactDisplay.class));
-    }
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 
-    // methods to check if the appropriate permissions have been granted
-    public boolean isStoragePermissionGranted() {
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED) {
-                return true;
-            } else {
-
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                return false;
-            }
+        if (settings.getBoolean("my_first_time", true)) {
+            //the app is being launched for first time, do something
+            Log.d("Comments", "First time");
+            settings.edit().putBoolean("my_first_time", false).commit();
+            startActivity(new Intent(this, CreateUserProfile.class));
+            finish();
         }
-        else { //permission is automatically granted on sdk<23 upon installation
-            return true;
-        }
-    }
-    public boolean isContactsPermissionGranted()
-    {
-        if (Build.VERSION.SDK_INT >= 23)
+        else
         {
-            if (checkSelfPermission(android.Manifest.permission.READ_CONTACTS)
-                    == PackageManager.PERMISSION_GRANTED) {
-
-                return true;
-            }
-            else
-            {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS}, 1);
-                return false;
-            }
-        }
-        else { //permission is automatically granted on sdk<23 upon installation
-            return true;
+            startActivity(new Intent(this, ContactDisplay.class));
+            finish();
         }
     }
-
 
 }
