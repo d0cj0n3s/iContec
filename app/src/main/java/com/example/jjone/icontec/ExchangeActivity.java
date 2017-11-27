@@ -12,15 +12,11 @@ import android.os.Build;
 import android.os.Parcelable;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.nio.charset.Charset;
@@ -48,7 +44,7 @@ public class ExchangeActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exchange);
 
-        Log.d("DB", "OnCreate()");
+        //Log.d("DB", "OnCreate()");
         name =  findViewById(R.id.txtBoxAddMessage);
         phoneNumber = findViewById(R.id.txtBoxAddMessage2);
         email = findViewById(R.id.txtBoxAddMessage3);
@@ -57,7 +53,7 @@ public class ExchangeActivity extends Activity
 
         updateTextViews();
 
-        btnAddMessage  .setOnClickListener(new View.OnClickListener() {
+        btnAddMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 addMessage(view);
@@ -65,6 +61,19 @@ public class ExchangeActivity extends Activity
         });
 
         startNfcAdapter();
+
+        Intent intent = getIntent();
+        String c_name;
+        String c_phone;
+        String c_email;
+
+        if(intent != null) {
+             c_name = intent.getStringExtra("name");
+             c_phone = intent.getStringExtra("phone");
+             c_email = intent.getStringExtra("email");
+
+             addContact(c_name, c_phone, c_email);
+        }
     }
 
     public void startNfcAdapter(){
@@ -117,6 +126,8 @@ public class ExchangeActivity extends Activity
             String phone = messagesReceivedArray.get(1);
             String email = messagesReceivedArray.get(2);
 
+            Log.d("DB", name + " " + phone + " " + email);
+
             addContact(name, phone, email);
         }
     }
@@ -128,13 +139,18 @@ public class ExchangeActivity extends Activity
 
         intent
                 .putExtra(ContactsContract.Intents.Insert.NAME, name)
+
                 .putExtra(ContactsContract.Intents.Insert.PHONE, phone)
+
                 .putExtra(ContactsContract.Intents.Insert.PHONE_TYPE,
                         ContactsContract.CommonDataKinds.Phone.TYPE_WORK)
+
                 .putExtra(ContactsContract.Intents.Insert.EMAIL, email)
+
                 .putExtra(ContactsContract.Intents.Insert.EMAIL_TYPE,
                         ContactsContract.CommonDataKinds.Phone.TYPE_WORK);
 
+        Log.d("DB", intent.toString());
 
         startActivity(intent);
     }
