@@ -125,7 +125,7 @@ public class CreateUserProfile extends AppCompatActivity
         layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         ViewGroup container = (ViewGroup)layoutInflater.inflate(R.layout.tutorial_popup,null);
 
-        popupWindow = new PopupWindow(container, 900,600,true);
+        popupWindow = new PopupWindow(container, 900,750,true);
 
         String tutorialMessage = "Enter in the contact details that you wish to transfer to another" +
                 " user. At the moment there are no constraints on the form of the entries. To save " +
@@ -152,8 +152,6 @@ public class CreateUserProfile extends AppCompatActivity
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
         startActivityForResult(pickPhoto , 1);
-
-
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent)

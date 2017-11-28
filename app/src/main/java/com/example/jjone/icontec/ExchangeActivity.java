@@ -1,24 +1,36 @@
 package com.example.jjone.icontec;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.NfcEvent;
 import android.os.Build;
+import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 
@@ -38,16 +50,30 @@ public class ExchangeActivity extends Activity
     SharedPreferences sharedpreferences;
     public static final String MyPREFERENCES = "MyPrefs" ;
 
+    //For popup window
+    private PopupWindow popupWindow;
+    private LayoutInflater layoutInflater;
+    private LinearLayout linearLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exchange);
 
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String ownerName = sharedpreferences.getString("name", "No name");
+        String ownerPhone = sharedpreferences.getString("phone", "No phone");
+        String ownerEmail = sharedpreferences.getString("email", "No email set");
+
         //Log.d("DB", "OnCreate()");
         name =  findViewById(R.id.txtBoxAddMessage);
         phoneNumber = findViewById(R.id.txtBoxAddMessage2);
         email = findViewById(R.id.txtBoxAddMessage3);
+
+        name.setText(ownerName);
+        phoneNumber.setText(ownerPhone);
+        email.setText(ownerEmail);
 
         btnAddMessage =  findViewById(R.id.buttonAddMessage);
 
@@ -70,7 +96,7 @@ public class ExchangeActivity extends Activity
 
         if(intent != null) {
             c_check = intent.getStringExtra("check");
-            Log.d("DB", c_check);
+            //Log.d("DB", c_check);
             if(c_check.equals("Welcome")) {
                 c_name = intent.getStringExtra("name");
                 c_phone = intent.getStringExtra("phone");
@@ -276,5 +302,51 @@ public class ExchangeActivity extends Activity
         Log.d("DB", "onResume");
         updateTextViews();
         handleNfcIntent(getIntent());
+    }
+
+    // Method for Proceed button. Proceeds to Success activity.
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    public void sendCard (View view)
+    {
+        /**startNfcAdapter();
+        mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        String getUri = sharedpreferences.getString("cardUri", "No card included");
+
+        File fileDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        File fileToTransfer = new File(fileDirectory, getUri);
+        fileToTransfer.setReadable(true, false);
+
+        mNfcAdapter.setBeamPushUris(new Uri[]{Uri.fromFile(fileToTransfer)}, this);*/
+        Toast.makeText(this, "UNDER DEVELOPMENT", Toast.LENGTH_SHORT).show();
+
+    }
+
+    // method for the pup that displays the tutorial when the Instructions button is tapped
+    @SuppressLint("SetTextI18n")
+    public void popUpTutorialExchangeInfo(View view)
+    {
+        linearLayout = findViewById(R.id.linearLay);
+
+        layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+        ViewGroup container = (ViewGroup)layoutInflater.inflate(R.layout.tutorial_popup,null);
+
+        popupWindow = new PopupWindow(container, 900,500,true);
+
+        String tutorialMessage = "To Exchange Information, Touch EXCHANGE INFORMATION. The SEND CARD " +
+                "button is under development. ";
+
+        ((TextView)popupWindow.getContentView().findViewById(R.id.tutorialText)).setText(tutorialMessage);
+        popupWindow.showAtLocation(linearLayout, Gravity.NO_GRAVITY, 250,500);
+
+        container.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent)
+            {
+                popupWindow.dismiss();
+                return true;
+            }
+        });
     }
 }
