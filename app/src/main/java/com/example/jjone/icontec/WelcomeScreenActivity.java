@@ -62,6 +62,11 @@ public class WelcomeScreenActivity extends AppCompatActivity {
         /** Handle NFC Intent */
         ArrayList<String> messagesReceivedArray = new ArrayList<>();
 
+        mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        if (mNfcAdapter != null) {
+            mNfcAdapter.setNdefPushMessage(null, this);
+         }
+
         Intent intent = getIntent();
         if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
 
