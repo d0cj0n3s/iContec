@@ -66,6 +66,7 @@ public class ContactDisplay extends AppCompatActivity
 
         StringBuilder sb = new StringBuilder("");
 
+        //nothing
         contact_list = (ListView) findViewById(R.id.list_contact);
         exchange = (FloatingActionButton) findViewById(R.id.btn_exchange);
         final List<String[]> items_subitems = new LinkedList<String[]>();
