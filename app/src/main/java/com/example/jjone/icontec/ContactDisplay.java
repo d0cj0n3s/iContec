@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -65,9 +66,15 @@ public class ContactDisplay extends AppCompatActivity
 
         StringBuilder sb = new StringBuilder("");
 
+        //nothing
         contact_list = (ListView) findViewById(R.id.list_contact);
         exchange = (FloatingActionButton) findViewById(R.id.btn_exchange);
         final List<String[]> items_subitems = new LinkedList<String[]>();
+
+        NfcAdapter mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        if (mNfcAdapter != null) {
+            mNfcAdapter.setNdefPushMessage(null, this);
+        }
 
 
         // Check the SDK version and whether the permission is already granted or not.
