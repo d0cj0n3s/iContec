@@ -3,6 +3,7 @@ package com.example.jjone.icontec;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -31,8 +32,13 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
+
+import static java.lang.Integer.parseInt;
+import static java.lang.Long.parseLong;
 
 
 public class ContactDisplay extends AppCompatActivity
@@ -64,8 +70,6 @@ public class ContactDisplay extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_display);
 
-        StringBuilder sb = new StringBuilder("");
-
         //nothing
         contact_list = (ListView) findViewById(R.id.list_contact);
         exchange = (FloatingActionButton) findViewById(R.id.btn_exchange);
@@ -78,10 +82,10 @@ public class ContactDisplay extends AppCompatActivity
 
 
         // Check the SDK version and whether the permission is already granted or not.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED)
-        {
-            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
-        }
+        //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED)
+        //{
+         //   requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
+        //}
 
         // Fill in the owner information box
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
@@ -105,11 +109,12 @@ public class ContactDisplay extends AppCompatActivity
             Cursor phoneCursor = resolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
                     ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?", new String[]{id}, null);
 
+            InputStream contactPhoto = openPhoto(parseLong(id));
 
             String phoneNumber="";
             String email="";
 
-            Log.e("My info",id + " = " + name);
+            //Log.e("My info",id + " = " + name);
             /*sb.append("Contact Id = " + id + "\n");
             sb.append("Contact Name = " + name + "\n");*/
 
@@ -154,7 +159,7 @@ public class ContactDisplay extends AppCompatActivity
                 //Log.i("My address info in add", street + " " + city + " " + state) ;
             }
             items_subitems.add(new String[]{ id, name, phoneNumber, email, street, city,state});
-            Log.i("My info", id + " " + name + " " + phoneNumber + " " + email + " " + street + " " + city + " " + state);
+            //Log.i("My info", id + " " + name + " " + phoneNumber + " " + email + " " + street + " " + city + " " + state);
 
         }
         ArrayAdapter<String[]> items_subitem_Adapter = new ArrayAdapter<String[]>(this, android.R.layout.simple_list_item_2, android.R.id.text1, items_subitems)
@@ -167,12 +172,16 @@ public class ContactDisplay extends AppCompatActivity
                 String[] entry = items_subitems.get(position);
                 TextView text1 = (TextView) view.findViewById(android.R.id.text1);
                 TextView text2 = (TextView) view.findViewById(android.R.id.text2);
+
+                
+                //ImageView contactIdPhoto = view.findViewById(android.R.id.photo1);
+
                 String temp = entry[0] + "|" + entry[1] + "|" + entry[2] +"|"+ entry[3] + "|" + entry[4];
 
                 text1.setText(entry[1]);
                 text1.setTextSize(20);
                 text2.setText(temp);
-                Log.i("list view item", temp);
+                //Log.i("list view item", temp);
                 text2.setVisibility(View.INVISIBLE);
                 return view;
             }
@@ -218,10 +227,10 @@ public class ContactDisplay extends AppCompatActivity
         ViewGroup container = (ViewGroup) layoutInflater.inflate(R.layout.tutorial_popup,
                 null);
 
-        popupWindow = new PopupWindow(container, 900, 500, true);
+        popupWindow = new PopupWindow(container, 700, 500, true);
 
         String tutorialMessage = "To view a contact who is listed, touch the entry. To proceed to " +
-                "exchanging details, click the big fuscia dot in the lower right corner.";
+                "exchanging details, click the arrow-in-box button in the lower right corner.";
 
         ((TextView) popupWindow.getContentView().findViewById(R.id.tutorialText)).setText(tutorialMessage);
         popupWindow.showAtLocation(constraintLayout, Gravity.NO_GRAVITY, 250, 500);
@@ -249,6 +258,28 @@ public class ContactDisplay extends AppCompatActivity
     public void toCreateUserProfile (View view)
     {
         startActivity(new Intent(this, CreateUserProfile.class));
+    }
+
+    // method to retrieve the Contact photo from contacts Database
+    public InputStream openPhoto(long contactId) {
+        Uri contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId);
+        Uri photoUri = Uri.withAppendedPath(contactUri, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
+        Cursor cursor = getContentResolver().query(photoUri,
+                new String[] {ContactsContract.Contacts.Photo.PHOTO}, null, null, null);
+        if (cursor == null) {
+            return null;
+        }
+        try {
+            if (cursor.moveToFirst()) {
+                byte[] data = cursor.getBlob(0);
+                if (data != null) {
+                    return new ByteArrayInputStream(data);
+                }
+            }
+        } finally {
+            cursor.close();
+        }
+        return null;
     }
 
 }
