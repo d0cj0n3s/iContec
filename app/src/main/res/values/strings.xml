@@ -12,4 +12,5 @@
     <string name="EDIT_NAME">Test Subject 001</string>
     <string name="EDIT_NUMBER">250-123-5213</string>
     <string name="EDIT_EMAIL">TestSubject@tru.ca</string>
+    <string name="title_activity_transfer_complete">TransferCompleteActivity</string>
 </resources>

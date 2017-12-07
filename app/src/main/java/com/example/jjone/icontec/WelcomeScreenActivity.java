@@ -11,6 +11,7 @@ import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Parcelable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
@@ -27,6 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class WelcomeScreenActivity extends AppCompatActivity {
@@ -56,8 +58,22 @@ public class WelcomeScreenActivity extends AppCompatActivity {
         linear_layout_icontect.setAnimation(uptodown);
         linear_layout_button.setAnimation(downtoup);
 
-        isStoragePermissionGranted();
-        isContactsPermissionGranted();
+
+        //Checks permissions when app is first launched
+        if (Build.VERSION.SDK_INT >= 23)
+        {
+            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                && checkSelfPermission(android.Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED)
+            {
+                Log.d("Write permission", "granted");
+                Log.d("Read Contacts", "granted");
+            }
+            else
+            {
+                ActivityCompat.requestPermissions(this, new String[]
+                        {Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_CONTACTS},1 );
+            }
+        }
 
         /** Handle NFC Intent */
         ArrayList<String> messagesReceivedArray = new ArrayList<>();
@@ -111,6 +127,8 @@ public class WelcomeScreenActivity extends AppCompatActivity {
 
             }
         } else { Log.d("DB", "DOESN't MATCH"); }
+
+        checkStorageFolder();
     }
 
     // method for the pup that displays the tutorial when the Instructions button is tapped
@@ -122,14 +140,14 @@ public class WelcomeScreenActivity extends AppCompatActivity {
         layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         ViewGroup container = (ViewGroup)layoutInflater.inflate(R.layout.tutorial_popup,null);
 
-        popupWindow = new PopupWindow(container, 900,1000,true);
+        popupWindow = new PopupWindow(container, 800,750,true);
 
         String tutorialMessage = "Thank you for choosing iContec!\n\nThis application is designed to" +
                 " make exchanging contact information easier than ever before!\n\nTo begin using the" +
                 " application, press the 'Proceed' button located at the bottom of the screen.\n\n";
 
         ((TextView)popupWindow.getContentView().findViewById(R.id.tutorialText)).setText(tutorialMessage);
-        popupWindow.showAtLocation(constraintLayout, Gravity.NO_GRAVITY, 250,750);
+        popupWindow.showAtLocation(constraintLayout, Gravity.NO_GRAVITY, 180,500);
 
         container.setOnTouchListener(new View.OnTouchListener()
         {
@@ -154,42 +172,21 @@ public class WelcomeScreenActivity extends AppCompatActivity {
             startActivity(new Intent(this, CreateUserProfile.class));
         else
             startActivity(new Intent(this, ContactDisplay.class));
+
     }
 
-    // methods to check if the appropriate permissions have been granted
-    public boolean isStoragePermissionGranted() {
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED) {
-                return true;
-            } else {
-
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-                return false;
-            }
-        }
-        else { //permission is automatically granted on sdk<23 upon installation
-            return true;
-        }
-    }
-    public boolean isContactsPermissionGranted()
+    //method to check if the storage folder for the cards has been created, and if not, create it
+    public void checkStorageFolder()
     {
-        if (Build.VERSION.SDK_INT >= 23)
-        {
-            if (checkSelfPermission(android.Manifest.permission.READ_CONTACTS)
-                    == PackageManager.PERMISSION_GRANTED) {
+        File folder = new File(Environment.getExternalStorageDirectory() +
+                File.separator + "Card Folder");
 
-                return true;
-            }
-            else
-            {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS}, 1);
-                return false;
-            }
+        if (!folder.exists())
+        {
+            folder.mkdirs();
+            Log.i("DB","The directory being made is :" + folder);
         }
-        else { //permission is automatically granted on sdk<23 upon installation
-            return true;
-        }
+
     }
 
 }

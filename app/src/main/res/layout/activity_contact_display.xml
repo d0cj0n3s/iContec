@@ -34,7 +34,8 @@
                     android:textSize="30sp"
                     app:layout_constraintBaseline_toBaselineOf="@+id/ownerName"
                     app:layout_constraintEnd_toStartOf="@+id/help_button"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:ignore="RtlCompat" />
 
                 <TextView
                     android:id="@+id/ownerName"
@@ -43,9 +44,12 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:text="Device Owner"
+                    android:textColor="@android:color/background_dark"
                     android:textSize="30sp"
+                    android:textStyle="normal|bold"
                     app:layout_constraintStart_toStartOf="@+id/textView6"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="RtlCompat" />
 
                 <Button
                     android:id="@+id/help_button"
@@ -57,7 +61,8 @@
                     android:text="Help"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/textView6"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="RtlCompat" />
 
                 <Button
                     android:id="@+id/button3"
@@ -68,7 +73,8 @@
                     android:onClick="toCreateUserProfile"
                     android:text="Edit Profile"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:ignore="RtlCompat" />
 
                 <TextView
                     android:id="@+id/textView7"
@@ -78,10 +84,13 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:text="Your Cards:"
+                    android:textColor="@android:color/black"
                     android:textSize="24sp"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/ownerName" />
+                    app:layout_constraintTop_toBottomOf="@+id/ownerName"
+                    tools:ignore="RtlCompat" />
 
             </android.support.constraint.ConstraintLayout>
 
@@ -114,7 +123,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text=" Saved Contacts:"
-                android:textSize="24sp" />
+                android:textColor="@android:color/black"
+                android:textSize="24sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout
@@ -132,13 +143,18 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/btn_exchange"
-        android:layout_width="155dp"
+        android:layout_width="100dp"
         android:layout_height="90dp"
         android:layout_gravity="bottom"
         android:layout_margin="16dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="124dp"
+        android:layout_marginEnd="108dp"
         android:clickable="true"
+        android:src="@android:drawable/ic_menu_set_as"
+        app:backgroundTint="@color/welcomeScreen_lightOrange"
+        app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_set_as"
+        tools:ignore="RtlCompat" />
 </android.support.constraint.ConstraintLayout>

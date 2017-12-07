@@ -105,7 +105,8 @@
         android:textColor="@android:color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/email"
-        tools:textSize="18sp" />
+        tools:textSize="18sp"
+        tools:ignore="RtlCompat" />
 
     <Button
         android:id="@+id/chooseCard"

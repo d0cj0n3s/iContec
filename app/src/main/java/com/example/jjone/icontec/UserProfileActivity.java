@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 public class UserProfileActivity extends AppCompatActivity {
     private static final int PERMISSIONS_REQUEST_WRITE_CONTACTS = 200;
-    EditText name_field, phone_field, address_field;
+    EditText name_field, phone_field, address_field, email_field;
     String detail;
     String id;
     Button save;
@@ -48,6 +48,7 @@ public class UserProfileActivity extends AppCompatActivity {
 //        Log.i("Array info", Integer.toString(detailarray.length) + " " + detailarray[0] + " " + detailarray[1] + " " + detailarray[2] + " " + detailarray[4]);
         name_field = (EditText) findViewById(R.id.edittxt_name);
         phone_field = (EditText) findViewById(R.id.editTxt_work_phone);
+        email_field = findViewById(R.id.editTxt_personal_email);
         address_field = (EditText) findViewById(R.id.editTxt_address);
 
         save = (Button) findViewById(R.id.btn_save);
@@ -57,9 +58,11 @@ public class UserProfileActivity extends AppCompatActivity {
         if(detailarray.length == 3)
         {
             phone_field.setText(detailarray[2]);
+
         }
         if (detailarray.length > 3)
         {
+            email_field.setText(detailarray[3]);
             address_field.setText(detailarray[4]);
         }
 //

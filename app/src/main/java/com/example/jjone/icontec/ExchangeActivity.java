@@ -2,6 +2,7 @@ package com.example.jjone.icontec;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,6 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -34,12 +36,15 @@ import java.io.File;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 
+import static android.content.ContentValues.TAG;
+
 public class ExchangeActivity extends Activity
         implements NfcAdapter.OnNdefPushCompleteCallback, NfcAdapter.CreateNdefMessageCallback {
 
     private EditText name;
     private EditText phoneNumber;
     private EditText email;
+    private ImageView card;
     private Button btnAddMessage;
 
     private NfcAdapter mNfcAdapter;
@@ -55,6 +60,11 @@ public class ExchangeActivity extends Activity
     private LayoutInflater layoutInflater;
     private LinearLayout linearLayout;
 
+    // Array of uri objects to transfer
+    private Uri[] mFileUris = new Uri[10];
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,15 +75,18 @@ public class ExchangeActivity extends Activity
         String ownerName = sharedpreferences.getString("name", "No name");
         String ownerPhone = sharedpreferences.getString("phone", "No phone");
         String ownerEmail = sharedpreferences.getString("email", "No email set");
+        String ownerCard = sharedpreferences.getString("cardUri", "No card");
 
         //Log.d("DB", "OnCreate()");
         name =  findViewById(R.id.txtBoxAddMessage);
         phoneNumber = findViewById(R.id.txtBoxAddMessage2);
         email = findViewById(R.id.txtBoxAddMessage3);
+        card = findViewById(R.id.cardView);
 
         name.setText(ownerName);
         phoneNumber.setText(ownerPhone);
         email.setText(ownerEmail);
+        card.setImageURI(Uri.parse(ownerCard));
 
         btnAddMessage =  findViewById(R.id.buttonAddMessage);
 
@@ -308,18 +321,8 @@ public class ExchangeActivity extends Activity
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     public void sendCard (View view)
     {
-        /**startNfcAdapter();
-        mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
-        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        String getUri = sharedpreferences.getString("cardUri", "No card included");
-
-        File fileDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        File fileToTransfer = new File(fileDirectory, getUri);
-        fileToTransfer.setReadable(true, false);
-
-        mNfcAdapter.setBeamPushUris(new Uri[]{Uri.fromFile(fileToTransfer)}, this);*/
-        Toast.makeText(this, "UNDER DEVELOPMENT", Toast.LENGTH_SHORT).show();
-
+        Intent i = new Intent(ExchangeActivity.this, TransferCompleteActivity.class);
+        startActivity(i);
     }
 
     // method for the pup that displays the tutorial when the Instructions button is tapped
@@ -333,8 +336,8 @@ public class ExchangeActivity extends Activity
 
         popupWindow = new PopupWindow(container, 900,500,true);
 
-        String tutorialMessage = "To Exchange Information, Touch EXCHANGE INFORMATION. The SEND CARD " +
-                "button is under development. ";
+        String tutorialMessage = "To Exchange Contact Information, Touch EXCHANGE INFORMATION. To transmit your chosen business card, " +
+                "click SEND CARD. ";
 
         ((TextView)popupWindow.getContentView().findViewById(R.id.tutorialText)).setText(tutorialMessage);
         popupWindow.showAtLocation(linearLayout, Gravity.NO_GRAVITY, 250,500);

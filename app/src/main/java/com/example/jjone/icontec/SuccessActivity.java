@@ -17,19 +17,11 @@ import android.widget.LinearLayout;
 public class SuccessActivity extends AppCompatActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_success);
-
-
-
-
     }
-
-
-
-
-
 
 
     // Method for Proceed button. Proceeds to ContactDisplay activity.

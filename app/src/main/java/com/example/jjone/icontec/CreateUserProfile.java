@@ -125,7 +125,7 @@ public class CreateUserProfile extends AppCompatActivity
         layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         ViewGroup container = (ViewGroup)layoutInflater.inflate(R.layout.tutorial_popup,null);
 
-        popupWindow = new PopupWindow(container, 900,750,true);
+        popupWindow = new PopupWindow(container, 700,750,true);
 
         String tutorialMessage = "Enter in the contact details that you wish to transfer to another" +
                 " user. At the moment there are no constraints on the form of the entries. To save " +
@@ -173,6 +173,7 @@ public class CreateUserProfile extends AppCompatActivity
 
                     // Displays the card as a thumbnail
                     card.setImageURI(imageUri);
+
                 }
         }
 
